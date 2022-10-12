@@ -1,10 +1,11 @@
 package controller.controller;
 
 import controller.observer.ObserverTelaInicial;
+import model.semaforo.malhas.abstracts.MalhaRodovia;
+import singleton.RepositorioMalha;
 import utils.LeitorArquivoMalha;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ControladorTelaInicial {
     private ObserverTelaInicial observer;
