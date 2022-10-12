@@ -23,4 +23,8 @@ public class ControladorTelaInicial {
             observer.alertarErroNoArquivo();
         }
     }
+    
+    public void navegarParaTelaMalhaRodoviaria() {
+        observer.navegarParaTelaMalhaRodoviaria(malhaRodoviaria);
+    }
 }

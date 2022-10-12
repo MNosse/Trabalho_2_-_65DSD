@@ -8,14 +8,14 @@ import java.awt.*;
 
 public class TelaInicial extends JFrame implements ObserverTelaInicial {
     
-    private ControladorTelaInicial controlador;
+    private final ControladorTelaInicial CONTROLADOR;
     private JTextField txtCaminho;
     private JButton btnProcurar;
     private JButton btnIniciar;
     private JFileChooser jfcArquivo;
     
     public TelaInicial() {
-        controlador = new ControladorTelaInicial(this);
+        CONTROLADOR = new ControladorTelaInicial(this);
         initialize();
     }
     
@@ -86,8 +86,12 @@ public class TelaInicial extends JFrame implements ObserverTelaInicial {
                 txtCaminho.setText("Selecione um arquivo de malha rodoviaria");
                 btnIniciar.setEnabled(false);
             } else {
-                controlador.atualizarConteudoMalhaRodoviaria(jfcArquivo.getSelectedFile());
+                CONTROLADOR.atualizarConteudoMalhaRodoviaria(jfcArquivo.getSelectedFile());
             }
+        });
+        
+        btnIniciar.addActionListener(click -> {
+            CONTROLADOR.navegarParaTelaMalhaRodoviaria();
         });
     }
     
@@ -106,5 +110,11 @@ public class TelaInicial extends JFrame implements ObserverTelaInicial {
         JOptionPane.showMessageDialog(null, "O arquivo selecionado não possui o padrão adequado de uma malha rodoviaria",
                 "Erro no arquivo", JOptionPane.ERROR_MESSAGE);
         btnIniciar.setEnabled(false);
+    }
+    
+    @Override
+    public void navegarParaTelaMalhaRodoviaria(int[][] malhaRodoviaria) {
+        new TelaMalhaRodoviaria(malhaRodoviaria);
+        this.dispose();
     }
 }
