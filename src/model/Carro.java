@@ -1,14 +1,17 @@
 package model;
 
-import javax.swing.*;
-
 public class Carro {
 
     private int linha;
     private int coluna;
 
-    //Se aplicável
-    private ImageIcon carro;
+    private String nomeCarro;
+
+    public Carro(int linha, int coluna, String nomeCarro) {
+        this.linha = linha;
+        this.coluna = coluna;
+        this.nomeCarro= nomeCarro;
+    }
 
     public int getLinha() {
         return linha;
@@ -26,11 +29,11 @@ public class Carro {
         this.coluna = coluna;
     }
 
-    public ImageIcon getCarro() {
-        return carro;
+    public String getNomeCarro() {
+        return nomeCarro;
     }
 
-    public void setCarro(ImageIcon carro) {
-        this.carro = carro;
+    public void setNomeCarro(String nomeCarro) {
+        this.nomeCarro = nomeCarro;
     }
 }

@@ -40,7 +40,6 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
                 lblsMalhaRodoviaria[linha][coluna] = lblMalha;
             }
         }
-        RepositorioMalha.getInstance().getFactoryMalhas();
         //JPANEL panLayout
         JPanel panLayout = new JPanel();
         RepositorioMalha.getInstance().getFactoryMalhas();
@@ -63,5 +62,7 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(scpScroll);
+
+        this.CONTROLADOR.geraCarro();
     }
 }

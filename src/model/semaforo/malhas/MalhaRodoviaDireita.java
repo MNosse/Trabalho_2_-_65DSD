@@ -7,10 +7,10 @@ import singleton.RepositorioMalha;
 public class MalhaRodoviaDireita extends MalhaRodovia {
 
     @Override
-    public void movimentarCarro(Carro carro) throws InterruptedException {
-        mutex.acquire();
-        MalhaRodovia malha = RepositorioMalha.getInstance().getFactoryMalhas()[carro.getLinha() + 1][carro.getColuna()];
-        malha.movimentarCarro(carro);
-        mutex.release();
+    public void movimentarCarro(Carro carro, MalhaRodovia malha) throws InterruptedException {
+        malha.getMutex().release();
+        carro.setColuna(carro.getColuna() +1);
+        MalhaRodovia proxMalha = RepositorioMalha.getInstance().getFactoryMalhas()[carro.getLinha()][carro.getColuna()];
+        proxMalha.movimentarCarro(carro, this);
     }
 }
