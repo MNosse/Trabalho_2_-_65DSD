@@ -18,11 +18,7 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
     public TelaMalhaRodoviaria() {
         CONTROLADOR = new ControladorTelaMalhaRodoviaria(this);
         initialize();
-    }
-    
-    public TelaMalhaRodoviaria(int[][] malhaRodoviaria) {
-        CONTROLADOR = new ControladorTelaMalhaRodoviaria(this, malhaRodoviaria);
-        initialize();
+        CONTROLADOR.geraCarro();
     }
     
     private void initialize() {
@@ -34,7 +30,6 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         lblsMalhaRodoviaria = new JLabel[CONTROLADOR.getMalhaRodoviaria().length][CONTROLADOR.getMalhaRodoviaria()[0].length];
         for (int linha = 0; linha < lblsMalhaRodoviaria.length; linha++) {
             for (int coluna = 0; coluna < lblsMalhaRodoviaria[0].length; coluna++) {
-                CONTROLADOR.geraFactoryMalha(linha, coluna);
                 JLabel lblMalha = new JLabel(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviaria()[linha][coluna]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
                 lblMalha.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
                 lblsMalhaRodoviaria[linha][coluna] = lblMalha;
@@ -42,7 +37,6 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         }
         //JPANEL panLayout
         JPanel panLayout = new JPanel();
-        RepositorioMalha.getInstance().getFactoryMalhas();
         panLayout.setLayout(layout);
         panLayout.setSize(GlobalVariables.LARGURA_TELA, GlobalVariables.ALTURA_TELA);
         for (int linha = 0; linha < lblsMalhaRodoviaria.length; linha++) {
@@ -62,7 +56,5 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(scpScroll);
-
-        this.CONTROLADOR.geraCarro();
     }
 }

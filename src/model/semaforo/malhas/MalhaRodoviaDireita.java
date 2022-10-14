@@ -1,16 +1,26 @@
 package model.semaforo.malhas;
 
-import model.Carro;
+import model.thread.Carro;
 import model.semaforo.malhas.abstracts.MalhaRodovia;
 import singleton.RepositorioMalha;
 
 public class MalhaRodoviaDireita extends MalhaRodovia {
-
+    
     @Override
-    public void movimentarCarro(Carro carro, MalhaRodovia malha) throws InterruptedException {
-        malha.getMutex().release();
-        carro.setColuna(carro.getColuna() +1);
-        MalhaRodovia proxMalha = RepositorioMalha.getInstance().getFactoryMalhas()[carro.getLinha()][carro.getColuna()];
-        proxMalha.movimentarCarro(carro, this);
+    public void movimentarCarro(Carro carro){
+        carro.setColuna(carro.getColuna()+1);
+        System.out.println("Eu sou o "+ carro.getNomeCarro() +" e estou passando para a coluna "+ carro.getColuna() + " e linha "+ carro.getLinha());
+    }
+    
+    @Override
+    public MalhaRodovia getProximaMalhaRodovia(Carro carro) {
+        int novaColuna = carro.getColuna()+1;
+        MalhaRodovia[][] malhaRodovias = RepositorioMalha.getInstance().getMalhaRodovias();
+        if(novaColuna < malhaRodovias[0].length && malhaRodovias[carro.getLinha()][novaColuna] != null)
+            return malhaRodovias[carro.getLinha()][novaColuna];
+        else{
+            this.getMutex().release();
+            return null;
+        }
     }
 }
