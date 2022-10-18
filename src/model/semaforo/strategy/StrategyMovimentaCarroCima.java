@@ -1,20 +1,19 @@
-package model.semaforo.malhas;
+package model.semaforo.strategy;
 
-import model.semaforo.observer.ObserverMalhaRodovia;
+import model.semaforo.malhas.MalhaRodovia;
 import model.thread.Carro;
-import model.semaforo.malhas.abstracts.MalhaRodovia;
 import singleton.RepositorioMalha;
 
-public class MalhaRodoviaCima extends MalhaRodovia {
-    public MalhaRodoviaCima(ObserverMalhaRodovia observer) {
-        super(observer);
+public class StrategyMovimentaCarroCima extends StrategyMovimentaCarro{
+    public StrategyMovimentaCarroCima(MalhaRodovia malhaRodovia) {
+        super(malhaRodovia);
     }
     
     @Override
-    public void movimentarCarro(Carro carro){
+    public void movimentarCarro(Carro carro) {
         carro.setLinha(carro.getLinha()-1);
         System.out.println("Eu sou o "+ carro.getNomeCarro() +" e estou passando para a coluna "+ carro.getColuna() + " e linha "+ carro.getLinha());
-        getObserver().notificarMovimentoCarro(carro.getLinha()+1, carro.getColuna(), carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
+        malhaRodovia.getObserver().notificarMovimentoCarro(carro.getLinha()+1, carro.getColuna(), carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
     }
     
     @Override
@@ -24,7 +23,6 @@ public class MalhaRodoviaCima extends MalhaRodovia {
         if(novaLinha >= 0 && malhaRodovias[novaLinha][carro.getColuna()] != null)
             return malhaRodovias[novaLinha][carro.getColuna()];
         else{
-            this.getMutex().release();
             return null;
         }
     }

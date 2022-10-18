@@ -1,11 +1,6 @@
 package controller.controller;
 
 import controller.observer.ObserverTelaInicial;
-import model.semaforo.malhas.MalhaRodoviaBaixo;
-import model.semaforo.malhas.MalhaRodoviaCima;
-import model.semaforo.malhas.MalhaRodoviaDireita;
-import model.semaforo.malhas.MalhaRodoviaEsquerda;
-import model.semaforo.malhas.abstracts.MalhaRodovia;
 import singleton.RepositorioMalha;
 import utils.LeitorArquivoMalha;
 

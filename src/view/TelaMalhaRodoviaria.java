@@ -2,6 +2,7 @@ package view;
 
 import controller.controller.ControladorTelaMalhaRodoviaria;
 import controller.observer.ObserverTelaMalhaRodoviaria;
+import view.components.ImagemCarro;
 import view.global.GlobalVariables;
 
 import javax.swing.*;
@@ -51,7 +52,6 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         setTitle("Malha rodoviaria");
         setVisible(true);
         setSize(GlobalVariables.LARGURA_TELA, GlobalVariables.ALTURA_TELA);
-        setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(scpScroll);
@@ -59,17 +59,7 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
     
     @Override
     public void notificarInicioCarro(int linha, int coluna, int r, int g, int b) {
-        Image image = ((ImageIcon) lblsMalhaRodoviaria[linha][coluna].getIcon()).getImage();
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2D = bufferedImage.createGraphics();
-        g2D.drawImage(image, 0, 0, null);
-        g2D.setColor(new Color(r, g, b));
-        g2D.fillOval(0, 0, image.getWidth(null), image.getHeight(null));
-        g2D.setColor(Color.BLACK);
-        g2D.setStroke(new BasicStroke(2));
-        g2D.drawOval(0, 0, image.getWidth(null), image.getHeight(null));
-        g2D.dispose();
-        lblsMalhaRodoviaria[linha][coluna].setIcon(new ImageIcon(bufferedImage));
+        lblsMalhaRodoviaria[linha][coluna].setIcon(new ImagemCarro((ImageIcon) lblsMalhaRodoviaria[linha][coluna].getIcon(), r, g, b));
         lblsMalhaRodoviaria[linha][coluna].revalidate();
         lblsMalhaRodoviaria[linha][coluna].repaint();
     }
@@ -79,17 +69,7 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].setIcon(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviariaNumeros()[linhaAntiga][colunaAntiga]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
         lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].revalidate();
         lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].repaint();
-        Image image = ((ImageIcon) lblsMalhaRodoviaria[linhaNova][colunaNova].getIcon()).getImage();
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2D = bufferedImage.createGraphics();
-        g2D.drawImage(image, 0, 0, null);
-        g2D.setColor(new Color(r, g, b));
-        g2D.fillOval(0, 0, image.getWidth(null), image.getHeight(null));
-        g2D.setColor(Color.BLACK);
-        g2D.setStroke(new BasicStroke(2));
-        g2D.drawOval(0, 0, image.getWidth(null), image.getHeight(null));
-        g2D.dispose();
-        lblsMalhaRodoviaria[linhaNova][colunaNova].setIcon(new ImageIcon(bufferedImage));
+        lblsMalhaRodoviaria[linhaNova][colunaNova].setIcon(new ImagemCarro((ImageIcon) lblsMalhaRodoviaria[linhaNova][colunaNova].getIcon(), r, g, b));
         lblsMalhaRodoviaria[linhaNova][colunaNova].revalidate();
         lblsMalhaRodoviaria[linhaNova][colunaNova].repaint();
     }
