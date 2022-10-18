@@ -23,17 +23,28 @@ public class Carro extends Thread {
     @Override
     public void run() {
         try {
+            //Bloqueia o mutex da malha inicial
             malhaRodovia.getMutex().acquire();
             while(true) {
+                //Recupera o mutex da malha seguinte a partir da atual
                 MalhaRodovia proximaMalhaRodovia = malhaRodovia.getProximaMalhaRodovia(this);
+                //Armazena o mutex da malha atual
                 MalhaRodovia malhaRodoviaAtual = malhaRodovia;
+                //Caso a malha seguinte não seja nula, ou seja, não saia do mapa
                 if (proximaMalhaRodovia != null) {
+                    //Bloqueia o mutex da malha seguinte
                     proximaMalhaRodovia.getMutex().acquire();
+                    //Seta a malha seguinte como a malha do carro
                     setMalhaRodovia(proximaMalhaRodovia);
+                    //Executa a ação de movimentar o carro, troca a linha ou coluna dele e imprime
                     malhaRodoviaAtual.movimentarCarro(this);
+                    //Libera o mutex da malha antiga armazenada na variavel local
                     malhaRodoviaAtual.getMutex().release();
                     sleep(tempoSleep);
-                } else {
+                }
+                //Caso a malha seguinte seja nula, ou seja, saia do mapa
+                else {
+                    //Libera o mutex da malha atual
                     malhaRodoviaAtual.getMutex().release();
                     System.out.println("Eu sou o "+ getNomeCarro() +" e estou saindo da pista");
                     break;
