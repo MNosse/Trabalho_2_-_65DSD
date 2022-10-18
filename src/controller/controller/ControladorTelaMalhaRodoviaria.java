@@ -1,11 +1,7 @@
 package controller.controller;
 
 import controller.observer.ObserverTelaMalhaRodoviaria;
-import model.semaforo.malhas.MalhaRodoviaBaixo;
-import model.semaforo.malhas.MalhaRodoviaCima;
-import model.semaforo.malhas.MalhaRodoviaDireita;
-import model.semaforo.malhas.MalhaRodoviaEsquerda;
-import model.semaforo.malhas.abstracts.MalhaRodovia;
+import model.thread.Carro;
 import singleton.RepositorioMalha;
 
 public class ControladorTelaMalhaRodoviaria {
@@ -14,27 +10,14 @@ public class ControladorTelaMalhaRodoviaria {
 
     public ControladorTelaMalhaRodoviaria(ObserverTelaMalhaRodoviaria observer) {
         this.observer = observer;
-        malhaRodoviaria = new int[0][0];
-    }
-    
-    public ControladorTelaMalhaRodoviaria(ObserverTelaMalhaRodoviaria observer, int[][] malhaRodoviaria) {
-        this.observer = observer;
-        this.malhaRodoviaria = malhaRodoviaria;
-        RepositorioMalha.getInstance().setFactoryMalhas(new MalhaRodovia[malhaRodoviaria.length][malhaRodoviaria[0].length]);
+        malhaRodoviaria = RepositorioMalha.getInstance().getMalhaRodoviariaNumeros();
     }
 
-    public void geraFactoryMalha(int linha, int coluna) {
-        switch (malhaRodoviaria[linha][coluna]){
-            case 1:
-                RepositorioMalha.getInstance().getFactoryMalhas()[linha][coluna] = new MalhaRodoviaCima();
-            case 2:
-                RepositorioMalha.getInstance().getFactoryMalhas()[linha][coluna] = new MalhaRodoviaDireita();
-            case 3:
-                RepositorioMalha.getInstance().getFactoryMalhas()[linha][coluna] = new MalhaRodoviaBaixo();
-            case 4:
-                RepositorioMalha.getInstance().getFactoryMalhas()[linha][coluna] = new MalhaRodoviaEsquerda();
-            default:
-        }
+    public void geraCarro(){
+        Carro carro1 = new Carro(0, 7, "Carro 1", RepositorioMalha.getInstance().getMalhaRodovias()[0][7]);
+        carro1.start();
+        Carro carro2 = new Carro(0, 7, "Carro 2", RepositorioMalha.getInstance().getMalhaRodovias()[0][7]);
+        carro2.start();
     }
 
     public int[][] getMalhaRodoviaria() {

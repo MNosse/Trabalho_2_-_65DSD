@@ -5,7 +5,8 @@ import model.semaforo.malhas.abstracts.MalhaRodovia;
 public class RepositorioMalha {
 
     private static RepositorioMalha instance;
-    private MalhaRodovia[][] factoryMalhas;
+    private int[][] malhaRodoviariaNumeros;
+    private MalhaRodovia[][] malhaRodovias;
 
     public RepositorioMalha() {
     }
@@ -16,11 +17,19 @@ public class RepositorioMalha {
         return instance;
     }
 
-    public MalhaRodovia[][] getFactoryMalhas() {
-        return factoryMalhas;
+    public MalhaRodovia[][] getMalhaRodovias() {
+        return malhaRodovias;
     }
 
-    public void setFactoryMalhas(MalhaRodovia[][] factoryMalhas) {
-        this.factoryMalhas = factoryMalhas;
+    public void setMalhaRodovias(MalhaRodovia[][] malhaRodovias) {
+        this.malhaRodovias = malhaRodovias;
+    }
+    
+    public int[][] getMalhaRodoviariaNumeros() {
+        return malhaRodoviariaNumeros;
+    }
+    
+    public void setMalhaRodoviariaNumeros(int[][] malhaRodoviariaNumeros) {
+        this.malhaRodoviariaNumeros = malhaRodoviariaNumeros;
     }
 }

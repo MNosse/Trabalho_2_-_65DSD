@@ -86,12 +86,12 @@ public class TelaInicial extends JFrame implements ObserverTelaInicial {
                 txtCaminho.setText("Selecione um arquivo de malha rodoviaria");
                 btnIniciar.setEnabled(false);
             } else {
-                CONTROLADOR.atualizarConteudoMalhaRodoviaria(jfcArquivo.getSelectedFile());
+                CONTROLADOR.atualizarConteudoMalhaRodoviariaNumeros(jfcArquivo.getSelectedFile());
             }
         });
         
         btnIniciar.addActionListener(click -> {
-            CONTROLADOR.navegarParaTelaMalhaRodoviaria();
+            CONTROLADOR.navegarParaTelaMalhaRodoviariaNumeros();
         });
     }
     
@@ -113,8 +113,8 @@ public class TelaInicial extends JFrame implements ObserverTelaInicial {
     }
     
     @Override
-    public void navegarParaTelaMalhaRodoviaria(int[][] malhaRodoviaria) {
-        new TelaMalhaRodoviaria(malhaRodoviaria);
+    public void navegarParaTelaMalhaRodoviaria() {
+        new TelaMalhaRodoviaria();
         this.dispose();
     }
 }
