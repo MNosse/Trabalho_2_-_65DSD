@@ -9,6 +9,9 @@ public class Carro extends Thread {
     private int linha;
     private int coluna;
     private String nomeCarro;
+    private int r;
+    private int g;
+    private int b;
     private int tempoSleep;
     private MalhaRodovia malhaRodovia;
 
@@ -17,6 +20,9 @@ public class Carro extends Thread {
         this.coluna = coluna;
         this.nomeCarro= nomeCarro;
         tempoSleep = new Random().nextInt(5001);
+        r = new Random().nextInt(256);
+        g = new Random().nextInt(256);
+        b = new Random().nextInt(256);
         this.malhaRodovia = malhaRodovia;
     }
     
@@ -25,6 +31,7 @@ public class Carro extends Thread {
         try {
             //Bloqueia o mutex da malha inicial
             malhaRodovia.getMutex().acquire();
+            malhaRodovia.getObserver().notificarInicioCarro(linha, coluna, r, g, b);
             while(true) {
                 //Recupera o mutex da malha seguinte a partir da atual
                 MalhaRodovia proximaMalhaRodovia = malhaRodovia.getProximaMalhaRodovia(this);
@@ -45,12 +52,14 @@ public class Carro extends Thread {
                 //Caso a malha seguinte seja nula, ou seja, saia do mapa
                 else {
                     //Libera o mutex da malha atual
+                    malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
                     malhaRodoviaAtual.getMutex().release();
                     System.out.println("Eu sou o "+ getNomeCarro() +" e estou saindo da pista");
                     break;
                 }
             }
         } catch (InterruptedException e) {
+            malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
             malhaRodovia.getMutex().release();
         }
     }
@@ -85,5 +94,17 @@ public class Carro extends Thread {
     
     public void setMalhaRodovia(MalhaRodovia malhaRodovia) {
         this.malhaRodovia = malhaRodovia;
+    }
+    
+    public int getR() {
+        return r;
+    }
+    
+    public int getG() {
+        return g;
+    }
+    
+    public int getB() {
+        return b;
     }
 }

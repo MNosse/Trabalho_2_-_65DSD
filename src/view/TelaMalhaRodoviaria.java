@@ -2,12 +2,11 @@ package view;
 
 import controller.controller.ControladorTelaMalhaRodoviaria;
 import controller.observer.ObserverTelaMalhaRodoviaria;
-import singleton.RepositorioMalha;
 import view.global.GlobalVariables;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodoviaria {
@@ -27,10 +26,10 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         //CONSTRAINTS
         GridBagConstraints constraints = new GridBagConstraints();
         //JLABEL[][] lblsMalhaRodoviaria
-        lblsMalhaRodoviaria = new JLabel[CONTROLADOR.getMalhaRodoviaria().length][CONTROLADOR.getMalhaRodoviaria()[0].length];
+        lblsMalhaRodoviaria = new JLabel[CONTROLADOR.getMalhaRodoviariaNumeros().length][CONTROLADOR.getMalhaRodoviariaNumeros()[0].length];
         for (int linha = 0; linha < lblsMalhaRodoviaria.length; linha++) {
             for (int coluna = 0; coluna < lblsMalhaRodoviaria[0].length; coluna++) {
-                JLabel lblMalha = new JLabel(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviaria()[linha][coluna]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
+                JLabel lblMalha = new JLabel(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviariaNumeros()[linha][coluna]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
                 lblMalha.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
                 lblsMalhaRodoviaria[linha][coluna] = lblMalha;
             }
@@ -56,5 +55,49 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(scpScroll);
+    }
+    
+    @Override
+    public void notificarInicioCarro(int linha, int coluna, int r, int g, int b) {
+        Image image = ((ImageIcon) lblsMalhaRodoviaria[linha][coluna].getIcon()).getImage();
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2D = bufferedImage.createGraphics();
+        g2D.drawImage(image, 0, 0, null);
+        g2D.setColor(new Color(r, g, b));
+        g2D.fillOval(0, 0, image.getWidth(null), image.getHeight(null));
+        g2D.setColor(Color.BLACK);
+        g2D.setStroke(new BasicStroke(2));
+        g2D.drawOval(0, 0, image.getWidth(null), image.getHeight(null));
+        g2D.dispose();
+        lblsMalhaRodoviaria[linha][coluna].setIcon(new ImageIcon(bufferedImage));
+        lblsMalhaRodoviaria[linha][coluna].revalidate();
+        lblsMalhaRodoviaria[linha][coluna].repaint();
+    }
+    
+    @Override
+    public void notificarMovimentoCarro(int linhaAntiga, int colunaAntiga, int linhaNova, int colunaNova, int r, int g, int b) {
+        lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].setIcon(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviariaNumeros()[linhaAntiga][colunaAntiga]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
+        lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].revalidate();
+        lblsMalhaRodoviaria[linhaAntiga][colunaAntiga].repaint();
+        Image image = ((ImageIcon) lblsMalhaRodoviaria[linhaNova][colunaNova].getIcon()).getImage();
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2D = bufferedImage.createGraphics();
+        g2D.drawImage(image, 0, 0, null);
+        g2D.setColor(new Color(r, g, b));
+        g2D.fillOval(0, 0, image.getWidth(null), image.getHeight(null));
+        g2D.setColor(Color.BLACK);
+        g2D.setStroke(new BasicStroke(2));
+        g2D.drawOval(0, 0, image.getWidth(null), image.getHeight(null));
+        g2D.dispose();
+        lblsMalhaRodoviaria[linhaNova][colunaNova].setIcon(new ImageIcon(bufferedImage));
+        lblsMalhaRodoviaria[linhaNova][colunaNova].revalidate();
+        lblsMalhaRodoviaria[linhaNova][colunaNova].repaint();
+    }
+    
+    @Override
+    public void notificarFimCarro(int linha, int coluna) {
+        lblsMalhaRodoviaria[linha][coluna].setIcon(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviariaNumeros()[linha][coluna]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
+        lblsMalhaRodoviaria[linha][coluna].revalidate();
+        lblsMalhaRodoviaria[linha][coluna].repaint();
     }
 }
