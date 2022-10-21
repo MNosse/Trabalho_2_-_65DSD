@@ -1,7 +1,11 @@
 package model.thread;
 
-import model.semaforo.malhas.abstracts.MalhaRodovia;
+import model.semaforo.malhas.Cruzamento;
+import model.semaforo.malhas.MalhaRodovia;
+import model.semaforo.malhas.MalhaRodoviaCruzamento;
+import singleton.RepositorioMalha;
 
+import java.util.List;
 import java.util.Random;
 
 public class Carro extends Thread {
@@ -9,6 +13,9 @@ public class Carro extends Thread {
     private int linha;
     private int coluna;
     private String nomeCarro;
+    private int r;
+    private int g;
+    private int b;
     private int tempoSleep;
     private MalhaRodovia malhaRodovia;
 
@@ -16,42 +23,75 @@ public class Carro extends Thread {
         this.linha = linha;
         this.coluna = coluna;
         this.nomeCarro= nomeCarro;
-        tempoSleep = new Random().nextInt(5001);
+        tempoSleep = new Random().nextInt(3001 - 1000) + 1000;
+        r = new Random().nextInt(256);
+        g = new Random().nextInt(256);
+        b = new Random().nextInt(256);
         this.malhaRodovia = malhaRodovia;
     }
     
     @Override
     public void run() {
+        MalhaRodovia proximaMalhaRodovia = null;
+        MalhaRodovia malhaRodoviaAtual = malhaRodovia;
         try {
-            //Bloqueia o mutex da malha inicial
-            malhaRodovia.getMutex().acquire();
+            malhaRodoviaAtual.getMutex().acquire();
+            malhaRodoviaAtual.getObserver().notificarInicioCarro(linha, coluna, r, g, b);
             while(true) {
-                //Recupera o mutex da malha seguinte a partir da atual
-                MalhaRodovia proximaMalhaRodovia = malhaRodovia.getProximaMalhaRodovia(this);
-                //Armazena o mutex da malha atual
-                MalhaRodovia malhaRodoviaAtual = malhaRodovia;
-                //Caso a malha seguinte não seja nula, ou seja, não saia do mapa
+                proximaMalhaRodovia = malhaRodovia.getProximaMalhaRodovia(this);
+                malhaRodoviaAtual = malhaRodovia;
+                //VERIFICA SE NAO SAI DA PISTA
                 if (proximaMalhaRodovia != null) {
-                    //Bloqueia o mutex da malha seguinte
-                    proximaMalhaRodovia.getMutex().acquire();
-                    //Seta a malha seguinte como a malha do carro
-                    setMalhaRodovia(proximaMalhaRodovia);
-                    //Executa a ação de movimentar o carro, troca a linha ou coluna dele e imprime
-                    malhaRodoviaAtual.movimentarCarro(this);
-                    //Libera o mutex da malha antiga armazenada na variavel local
-                    malhaRodoviaAtual.getMutex().release();
-                    sleep(tempoSleep);
+                    //VERIFICA SE E CRUZAMENTO, CASO SEJA ELE EXECUTA O METODO MOVIMENTARCARRO DO CRUZAMENTO
+                    //CUJO UTILIZA SYNCHRONIZED
+                    if (proximaMalhaRodovia.getClass().equals(MalhaRodoviaCruzamento.class)) {
+                        for (Cruzamento cruzamento : RepositorioMalha.getInstance().getCruzamentos()) {
+                            if (cruzamento.getMalhasQueCompoe().contains((MalhaRodoviaCruzamento) proximaMalhaRodovia)) {
+                                cruzamento.movimentarCarro(this);
+                                malhaRodoviaAtual.getMutex().release();
+                                break;
+                            }
+                        }
+                    }
+                    //COMO A MALHA NAO E CRUZAMENTO EXECUTA O METODO PADRAO DA MALHA USANDO MUTEX
+                    else {
+                        proximaMalhaRodovia.getMutex().acquire();
+                        setMalhaRodovia(proximaMalhaRodovia);
+                        malhaRodoviaAtual.movimentarCarro(this);
+                        malhaRodoviaAtual.getMutex().release();
+                    }
+                    dormir();
                 }
-                //Caso a malha seguinte seja nula, ou seja, saia do mapa
                 else {
-                    //Libera o mutex da malha atual
-                    malhaRodoviaAtual.getMutex().release();
-                    System.out.println("Eu sou o "+ getNomeCarro() +" e estou saindo da pista");
                     break;
                 }
             }
         } catch (InterruptedException e) {
-            malhaRodovia.getMutex().release();
+            //NOTIFICA O OBSERVER DO CONTROLADR PARA APAGAR O CARRO
+            malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
+            //LIBERA ATUAL
+            malhaRodoviaAtual.getMutex().release();
+            //LIBERA PROXIMA CASO NAO FOR NULA
+            if (proximaMalhaRodovia != null) {
+                proximaMalhaRodovia.getMutex().release();
+            }
+        } finally {
+            //NOTIFICA O OBSERVER DO CONTROLADR PARA APAGAR O CARRO
+            malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
+            //LIBERA ATUAL
+            malhaRodoviaAtual.getMutex().release();
+            //LIBERA PROXIMA CASO NAO FOR NULA
+            if (proximaMalhaRodovia != null) {
+                proximaMalhaRodovia.getMutex().release();
+            }
+        }
+    }
+    
+    public void dormir() {
+        try {
+            sleep(tempoSleep);
+        } catch(InterruptedException e) {
+        
         }
     }
 
@@ -85,5 +125,17 @@ public class Carro extends Thread {
     
     public void setMalhaRodovia(MalhaRodovia malhaRodovia) {
         this.malhaRodovia = malhaRodovia;
+    }
+    
+    public int getR() {
+        return r;
+    }
+    
+    public int getG() {
+        return g;
+    }
+    
+    public int getB() {
+        return b;
     }
 }

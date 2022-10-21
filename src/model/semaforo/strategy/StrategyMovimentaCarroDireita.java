@@ -1,15 +1,19 @@
-package model.semaforo.malhas;
+package model.semaforo.strategy;
 
+import model.semaforo.malhas.MalhaRodovia;
 import model.thread.Carro;
-import model.semaforo.malhas.abstracts.MalhaRodovia;
 import singleton.RepositorioMalha;
 
-public class MalhaRodoviaDireita extends MalhaRodovia {
+public class StrategyMovimentaCarroDireita extends StrategyMovimentaCarro{
+    public StrategyMovimentaCarroDireita(MalhaRodovia malhaRodovia) {
+        super(malhaRodovia);
+    }
     
     @Override
-    public void movimentarCarro(Carro carro){
+    public void movimentarCarro(Carro carro) {
         carro.setColuna(carro.getColuna()+1);
         System.out.println("Eu sou o "+ carro.getNomeCarro() +" e estou passando para a coluna "+ carro.getColuna() + " e linha "+ carro.getLinha());
+        malhaRodovia.getObserver().notificarMovimentoCarro(carro.getLinha(), carro.getColuna()-1, carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
     }
     
     @Override
@@ -19,7 +23,7 @@ public class MalhaRodoviaDireita extends MalhaRodovia {
         if(novaColuna < malhaRodovias[0].length && malhaRodovias[carro.getLinha()][novaColuna] != null)
             return malhaRodovias[carro.getLinha()][novaColuna];
         else{
-            this.getMutex().release();
+
             return null;
         }
     }

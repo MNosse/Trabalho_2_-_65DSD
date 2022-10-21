@@ -1,14 +1,20 @@
 package singleton;
 
-import model.semaforo.malhas.abstracts.MalhaRodovia;
+import model.semaforo.malhas.Cruzamento;
+import model.semaforo.malhas.MalhaRodovia;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepositorioMalha {
 
     private static RepositorioMalha instance;
     private int[][] malhaRodoviariaNumeros;
     private MalhaRodovia[][] malhaRodovias;
+    private List<Cruzamento> cruzamentos;
 
-    public RepositorioMalha() {
+    private RepositorioMalha() {
+        cruzamentos = new ArrayList<>();
     }
 
     public synchronized static RepositorioMalha getInstance(){
@@ -31,5 +37,13 @@ public class RepositorioMalha {
     
     public void setMalhaRodoviariaNumeros(int[][] malhaRodoviariaNumeros) {
         this.malhaRodoviariaNumeros = malhaRodoviariaNumeros;
+    }
+    
+    public List<Cruzamento> getCruzamentos() {
+        return cruzamentos;
+    }
+    
+    public void setCruzamentos(List<Cruzamento> cruzamentos) {
+        this.cruzamentos = cruzamentos;
     }
 }
