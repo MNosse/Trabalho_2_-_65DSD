@@ -14,10 +14,12 @@ import singleton.RepositorioMalha;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ControladorTelaMalhaRodoviaria implements ObserverMalhaRodovia {
     private ObserverTelaMalhaRodoviaria observer;
     private int[][] malhaRodoviariaNumeros;
+    private boolean encerramento;
 
     public ControladorTelaMalhaRodoviaria(ObserverTelaMalhaRodoviaria observer) {
         this.observer = observer;
@@ -106,23 +108,16 @@ public class ControladorTelaMalhaRodoviaria implements ObserverMalhaRodovia {
                 }
             }
         }
+        mapeamentoEntradas();
     }
 
     public void geraCarro(){
-//        TESTE MALHA 1
-        Carro carro1 = new Carro(0, 7, "Carro 1", RepositorioMalha.getInstance().getMalhaRodovias()[0][7]);
-        carro1.start();
-        Carro carro2 = new Carro(0, 7, "Carro 2", RepositorioMalha.getInstance().getMalhaRodovias()[0][7]);
-        carro2.start();
-        //TESTE MALHA 2
-//        Carro carro1 = new Carro(0, 7, "Carro 1", RepositorioMalha.getInstance().getMalhaRodovias()[0][7]);
-//        carro1.start();
-//        Carro carro2 = new Carro(24, 8, "Carro 2", RepositorioMalha.getInstance().getMalhaRodovias()[24][8]);
-//        carro2.start();
-//        Carro carro3 = new Carro(6, 0, "Carro 3", RepositorioMalha.getInstance().getMalhaRodovias()[6][0]);
-//        carro3.start();
-//        Carro carro4 = new Carro(5, 24, "Carro 4", RepositorioMalha.getInstance().getMalhaRodovias()[5][24]);
-//        carro4.start();
+        int posicao = new Random().nextInt(RepositorioMalha.getInstance().getIniciosMalha().size());
+        int linha = RepositorioMalha.getInstance().getIniciosMalha().get(posicao).getLinha();
+        int coluna = RepositorioMalha.getInstance().getIniciosMalha().get(posicao).getColuna();
+        Carro carro = new Carro(linha, coluna, "Carro", RepositorioMalha.getInstance().getMalhaRodovias()[linha][coluna]);
+        RepositorioMalha.getInstance().setCarros(carro);
+        carro.start();
     }
 
     public int[][] getMalhaRodoviariaNumeros() {
@@ -140,7 +135,49 @@ public class ControladorTelaMalhaRodoviaria implements ObserverMalhaRodovia {
     }
     
     @Override
-    public void notificarFimCarro(int linha, int coluna) {
+    public void notificarFimCarro(int linha, int coluna, Carro carro) {
         observer.notificarFimCarro(linha, coluna);
+        if(!encerramento){
+            RepositorioMalha.getInstance().getCarros().remove(carro);
+            geraCarro();
+        }
+    }
+
+    public void onEncerrarCarros(){
+        for(Carro carro : RepositorioMalha.getInstance().getCarros()){
+            carro.stop();
+            this.encerramento = true;
+            observer.notificarFimCarro(carro.getLinha(), carro.getColuna());
+        }
+    }
+
+    @Override
+    public void onIniciar(String s) {
+        this.encerramento = false;
+        if(s.matches("^\\d+$")){
+            int numThreads = Integer.parseInt(s);
+            for(int i = 0; i < numThreads; i ++){
+                geraCarro();
+            }
+        }
+    }
+
+    private void mapeamentoEntradas(){
+        for (int coluna = 0; coluna < malhaRodoviariaNumeros[0].length; coluna++) {
+            if (malhaRodoviariaNumeros[0][coluna] == 3) {
+                RepositorioMalha.getInstance().addIniciosMalha(RepositorioMalha.getInstance().getMalhaRodovias()[0][coluna]);
+            }
+            if (malhaRodoviariaNumeros[malhaRodoviariaNumeros.length -1][coluna] == 1) {
+                RepositorioMalha.getInstance().addIniciosMalha(RepositorioMalha.getInstance().getMalhaRodovias()[malhaRodoviariaNumeros.length -1][coluna]);
+            }
+        }
+        for (int linha = 0; linha < malhaRodoviariaNumeros.length -1; linha++) {
+            if (malhaRodoviariaNumeros[linha][0] == 2) {
+                RepositorioMalha.getInstance().addIniciosMalha(RepositorioMalha.getInstance().getMalhaRodovias()[linha][0]);
+            }
+            if (malhaRodoviariaNumeros[linha][malhaRodoviariaNumeros[0].length -1] == 4) {
+                RepositorioMalha.getInstance().addIniciosMalha(RepositorioMalha.getInstance().getMalhaRodovias()[linha][malhaRodoviariaNumeros[0].length -1]);
+            }
+        }
     }
 }

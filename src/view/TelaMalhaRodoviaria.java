@@ -18,7 +18,6 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
     public TelaMalhaRodoviaria() {
         CONTROLADOR = new ControladorTelaMalhaRodoviaria(this);
         initialize();
-        CONTROLADOR.geraCarro();
     }
     
     private void initialize() {
@@ -46,9 +45,20 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
                 panLayout.add(lblsMalhaRodoviaria[linha][coluna], constraints);
             }
         }
+        JButton iniciar = new JButton();
+        iniciar.setText("INICIAR SIMULAÇÃO");
+        JButton encerrar = new JButton();
+        encerrar.setText("ENCERRAR SIMULAÇÃO");
+        TextField numeroThreads = new TextField();
+        panLayout.add(iniciar);
+        panLayout.add(encerrar);
+        panLayout.add(numeroThreads);
+        iniciar.addActionListener(e -> CONTROLADOR.onIniciar(numeroThreads.getText().toString()));
+        encerrar.addActionListener(e -> CONTROLADOR.onEncerrarCarros());
         //JSCROLLPANE scpScroll
         JScrollPane scpScroll = new JScrollPane(panLayout);
         //THIS
+
         setTitle("Malha rodoviaria");
         setVisible(true);
         setSize(GlobalVariables.LARGURA_TELA, GlobalVariables.ALTURA_TELA);

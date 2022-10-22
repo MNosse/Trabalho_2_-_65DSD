@@ -2,6 +2,7 @@ package singleton;
 
 import model.semaforo.malhas.Cruzamento;
 import model.semaforo.malhas.MalhaRodovia;
+import model.thread.Carro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ public class RepositorioMalha {
     private int[][] malhaRodoviariaNumeros;
     private MalhaRodovia[][] malhaRodovias;
     private List<Cruzamento> cruzamentos;
+    private List<MalhaRodovia> iniciosMalha = new ArrayList<>();
+    private List<Carro> carros = new ArrayList<>();
 
     private RepositorioMalha() {
         cruzamentos = new ArrayList<>();
@@ -45,5 +48,21 @@ public class RepositorioMalha {
     
     public void setCruzamentos(List<Cruzamento> cruzamentos) {
         this.cruzamentos = cruzamentos;
+    }
+
+    public List<MalhaRodovia> getIniciosMalha() {
+        return iniciosMalha;
+    }
+
+    public void addIniciosMalha(MalhaRodovia inicioMalha) {
+        this.iniciosMalha.add(inicioMalha);
+    }
+
+    public List<Carro> getCarros() {
+        return carros;
+    }
+
+    public void setCarros(Carro carro) {
+        this.carros.add(carro);
     }
 }

@@ -68,7 +68,7 @@ public class Carro extends Thread {
             }
         } catch (InterruptedException e) {
             //NOTIFICA O OBSERVER DO CONTROLADR PARA APAGAR O CARRO
-            malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
+            malhaRodovia.getObserver().notificarFimCarro(linha, coluna, this);
             //LIBERA ATUAL
             malhaRodoviaAtual.getMutex().release();
             //LIBERA PROXIMA CASO NAO FOR NULA
@@ -77,7 +77,7 @@ public class Carro extends Thread {
             }
         } finally {
             //NOTIFICA O OBSERVER DO CONTROLADR PARA APAGAR O CARRO
-            malhaRodovia.getObserver().notificarFimCarro(linha, coluna);
+            malhaRodovia.getObserver().notificarFimCarro(linha, coluna, this);
             //LIBERA ATUAL
             malhaRodoviaAtual.getMutex().release();
             //LIBERA PROXIMA CASO NAO FOR NULA
