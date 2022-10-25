@@ -113,8 +113,8 @@ public class TelaInicial extends JFrame implements ObserverTelaInicial {
     }
     
     @Override
-    public void navegarParaTelaMalhaRodoviaria() {
-        new TelaMalhaRodoviaria();
+    public void navegarParaTelaAbstractFactory() {
+        new TelaAbstractFactory();
         this.dispose();
     }
 }

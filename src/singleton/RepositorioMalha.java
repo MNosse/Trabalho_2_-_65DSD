@@ -1,8 +1,8 @@
 package singleton;
 
-import model.semaforo.malhas.Cruzamento;
-import model.semaforo.malhas.MalhaRodovia;
-import model.thread.Carro;
+import model.abstractFactory.AbstractFactoryMalhaRodovia;
+import model.malhas.AbstractCruzamento;
+import model.malhas.AbstractMalhaRodovia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,14 @@ public class RepositorioMalha {
 
     private static RepositorioMalha instance;
     private int[][] malhaRodoviariaNumeros;
-    private MalhaRodovia[][] malhaRodovias;
-    private List<Cruzamento> cruzamentos;
-    private List<MalhaRodovia> iniciosMalha = new ArrayList<>();
-    private List<Carro> carros = new ArrayList<>();
+    private AbstractFactoryMalhaRodovia factory;
+    private AbstractMalhaRodovia[][] malhasRodovia;
+    private List<AbstractCruzamento> cruzamentos;
+    private List<AbstractMalhaRodovia> iniciosMalha;
 
     private RepositorioMalha() {
         cruzamentos = new ArrayList<>();
+        iniciosMalha = new ArrayList<>();
     }
 
     public synchronized static RepositorioMalha getInstance(){
@@ -26,12 +27,12 @@ public class RepositorioMalha {
         return instance;
     }
 
-    public MalhaRodovia[][] getMalhaRodovias() {
-        return malhaRodovias;
+    public AbstractMalhaRodovia[][] getMalhaRodovias() {
+        return malhasRodovia;
     }
 
-    public void setMalhaRodovias(MalhaRodovia[][] malhaRodovias) {
-        this.malhaRodovias = malhaRodovias;
+    public void setMalhaRodovias(AbstractMalhaRodovia[][] malhasRodovia) {
+        this.malhasRodovia = malhasRodovia;
     }
     
     public int[][] getMalhaRodoviariaNumeros() {
@@ -42,27 +43,27 @@ public class RepositorioMalha {
         this.malhaRodoviariaNumeros = malhaRodoviariaNumeros;
     }
     
-    public List<Cruzamento> getCruzamentos() {
+    public List<AbstractCruzamento> getCruzamentos() {
         return cruzamentos;
     }
     
-    public void setCruzamentos(List<Cruzamento> cruzamentos) {
+    public void setCruzamentos(List<AbstractCruzamento> cruzamentos) {
         this.cruzamentos = cruzamentos;
     }
 
-    public List<MalhaRodovia> getIniciosMalha() {
+    public List<AbstractMalhaRodovia> getIniciosMalha() {
         return iniciosMalha;
     }
 
-    public void addIniciosMalha(MalhaRodovia inicioMalha) {
+    public void addInicioMalha(AbstractMalhaRodovia inicioMalha) {
         this.iniciosMalha.add(inicioMalha);
     }
-
-    public List<Carro> getCarros() {
-        return carros;
+    
+    public AbstractFactoryMalhaRodovia getFactory() {
+        return factory;
     }
-
-    public void setCarros(Carro carro) {
-        this.carros.add(carro);
+    
+    public void setFactory(AbstractFactoryMalhaRodovia factory) {
+        this.factory = factory;
     }
 }

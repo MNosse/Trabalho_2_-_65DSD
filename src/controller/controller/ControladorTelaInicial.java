@@ -26,6 +26,6 @@ public class ControladorTelaInicial {
     
     public void navegarParaTelaMalhaRodoviariaNumeros() {
         RepositorioMalha.getInstance().setMalhaRodoviariaNumeros(malhaRodoviariaNumeros);
-        observer.navegarParaTelaMalhaRodoviaria();
+        observer.navegarParaTelaAbstractFactory();
     }
 }
