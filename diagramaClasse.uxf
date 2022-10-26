@@ -1,0 +1,1346 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>2</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>158</x>
+      <y>408</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>Thread</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>194</x>
+      <y>408</y>
+      <w>104</w>
+      <h>94</h>
+    </coordinates>
+    <panel_attributes>Carro
+--
+- interrupted : boolean
+- primeiraIteracao : boolean
+- linha: int
+- coluna: int
+- nomeCarro: String
+- r: int
+- g: int
+- b: int
+- tempoSleep: int
+--
++ Carro(linha: int, coluna: int, nomeCarro: String, malhaRodovia: MalhaRodovia)
++ run(): void
++ setInterruptedTrue() : void
++ dormir(): void
++ desativarPrimeiraIteracao() : void
++ getPrimeiraIteracao() : boolean
++ getInterrupted() : boolean
++ getLinha(): int
++ setLinha(linha: int): void
++ getColuna(): int
++ setColuna(coluna: int): void
++ getNomeCarro(): String
++ setNomeCarro(nomeCarro: String): void
++ getMalhaRodovia(): MalhaRodovia
++ setMalhaRodovia(malhaRodovia: MalhaRodovia): void
++ getR(): int
++ getG(): int
++ getB(): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>174</x>
+      <y>298</y>
+      <w>144</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+ObserverMalhaRodovia
+--
+notificarInicioCarro(linha: int, coluna: int, r: int, g: int, b: int): void
+notificarMovimentoCarro(linhaAntiga: int, colunaAntiga: int, linhaNova: int, colunaNova: int, r: int, g: int, b: int): void
+notificarFimCarro(linha: int, coluna: int, carro: Carro): void
+onIniciar(s: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>704</x>
+      <y>394</y>
+      <w>76</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>/StrategyMovimentaCarro/
+--
+--
++ StrategyMovimentaCarro(malhaRodovia, MalhaRodovia)
+/+ movimentarCarro(carro: Carro): void/
+/+ getProximaMalhaRodovia(carro: Carro): MalhaRodovia/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>338</y>
+      <w>82</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>StrategyMovimentaCarroBaixo
+--
+
+--
++ StrategyMovimentaCarroBaixo(malhaRodovia: MalhaRodovia)
++ movimentarCarro(carro: Carro): void
++ getProximaMalhaRodovia(carro: Carro): MalhaRodovia
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>830</x>
+      <y>338</y>
+      <w>82</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>StrategyMovimentaCarroCima
+--
+
+--
++ StrategyMovimentaCarroCima(malhaRodovia: MalhaRodovia)
++ movimentarCarro(carro: Carro): void
++ getProximaMalhaRodovia(carro: Carro): MalhaRodovia
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>338</y>
+      <w>84</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>StrategyMovimentaCarroDireita
+--
+
+--
++ StrategyMovimentaCarroDireita(malhaRodovia: MalhaRodovia)
++ movimentarCarro(carro: Carro): void
++ getProximaMalhaRodovia(carro: Carro): MalhaRodovia
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>338</y>
+      <w>88</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>StrategyMovimentaCarroEsquerda
+--
+
+--
++ StrategyMovimentaCarroEsquerda(malhaRodovia: MalhaRodovia)
++ movimentarCarro(carro: Carro): void
++ getProximaMalhaRodovia(carro: Carro): MalhaRodovia
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>784</x>
+      <y>120</y>
+      <w>98</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>RepositorioMalha
+--
+- instance: RepositorioMalha
+- malhaRodoviariaNumeros: int[][]
+- malhaRodovias: MalhaRodovia[][]
+- cruzamentos: List&lt;Cruzamento&gt;
+- iniciosMalha: List&lt;MalhaRodovia&gt;
+- carros: List&lt;Carro&gt;
+--
+- RepositorioMalha()
++ @getInstance(): RepositorioMalha
++ getMalhaRodovias(): MalhaRodovia[][]
++ setMalhaRodovias(malhaRodovias: MalhaRodovia[][]): void
++ getMalhaRodoviariaNumeros(): int[][]
++ setMalhaRodoviariaNumeros(malhaRodoviariaNumeros: int[][]): void
++ getCruzamentos(): List&lt;Cruzamento&gt;
++ setCruzamentos(cruzamentos: List&lt;Cruzamento&gt;): void
++ getIniciosMalha(): List&lt;MalhaRodovia&gt;
++ addIniciosMalha(inicioMalha: MalhaRodovia): void
++ getCarros(): List&lt;Carro&gt;
++ setCarros(carro: Carro): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>346</x>
+      <y>298</y>
+      <w>106</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>ControladorTelaInicial
+--
+- malhaRodoviariaNumeros: int[][]
+--
++ ControladorTelaInicial(observer: ObserverTelaInicial)
++ atualizarConteudoMalhaRodoviariaNumeros(arquivoMalhaRodoviaria: File): void
++ navegarParaTelaMalhaRodoviariaNumeros(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>196</x>
+      <y>340</y>
+      <w>100</w>
+      <h>46</h>
+    </coordinates>
+    <panel_attributes>ControladorTelaMalhaRodoviaria
+--
+- malhaRodoviariaNumeros: int[][]
+- interruptClick : boolean
+--
++ ControladorTelaMalhaRodoviaria(observer: ObserverTelaMalhaRodoviaria)
++ iniciarMalhasRodoviarias() : void
++ getMalhaRodoviariaNumeros() : int[][]
++ notificarInicioCarro(linha : int, coluna : int, r : int, g : int, b : int): void
++ notificarMovimentoCarro(linhaAntiga: int, colunaAntiga: int, linhaNova: int, colunaNova: int, r: int, g: int, b: int): void
++ notificarFimCarro(linha: int, coluna: int, carro : Carro) : void
++ geraCarro(): void
++ onIniciar(s: String): void
++ onEncerrarCarros(): void
++ mapeamentoEntradas(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>370</x>
+      <y>186</y>
+      <w>58</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+ObserverTelaInicial
+--
+ativarBotaoIniciar(): void
+atualizarTxtCaminho(caminho: String): void
+alertarErroNoArquivo(): void
+navegarParaTelaAbstractFactory(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>174</x>
+      <y>188</y>
+      <w>144</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+ObserverTelaMalhaRodoviaria
+--
+notificarInicioCarro(linha: int, coluna: int, r: int, g: int, b: int): void
+notificarMovimentoCarro(linhaAntiga: int, colunaAntiga: int, linhaNova: int, colunaNova: int, r: int, g: int, b: int): void
+notificarFimCarro(linha: int, coluna: int)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>672</x>
+      <y>144</y>
+      <w>78</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>LeitorArquivoMalha
+--
+--
++ gerarMalhaRodoviaria(arquivoMalhaRodoviaria: File): int[][]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>140</y>
+      <w>84</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>ImagemCarro
+--
+--
++ ImagemCarro(imagemFundo: ImageIcon, r: int, g: int, b:int)
+- desenharCarro(imagemFundo: ImageIcon, r:int, g:int, b:int): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>124</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>ImageIcon</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>538</x>
+      <y>128</y>
+      <w>6</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>606</x>
+      <y>140</y>
+      <w>36</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>GlobalVariables
+--
+--
++ ALTURA_TELA: int
++ LARGURA_TELA: int
++ LADO_QUADRADO: int
++ MARGEM_BOTOES: int
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>372</x>
+      <y>232</y>
+      <w>56</w>
+      <h>46</h>
+    </coordinates>
+    <panel_attributes>TelaInicial
+--
+- txtCaminho: JTextField
+- btnProcurar: JButton
+- btnIniciar: JButton
+- jfcArquivo: JFileChooser
+--
++ TelaInicial()
+- initialize(): void
+- initializeActions(): void
++ ativarBotaoIniciar(): void
++ atualizarTxtCaminho(caminho: String): void
++ alertarErroNoArquivo(): void
++ navegarParaTelaMalhaRodoviaria(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>336</x>
+      <y>216</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>Jframe</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>448</x>
+      <y>206</y>
+      <w>36</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>Trabalho2DSD
+--
+--
++ main(args: String[]): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>218</y>
+      <w>44</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>200.0;10.0;200.0;120.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>172</x>
+      <y>232</y>
+      <w>148</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>TelaMalhaRodoviaria
+--
+- lblsMalhaRodoviaria: JLabel[][]
+--
++ TelaMalhaRodoviaria()
+- initialize(): void
++@ diminuirlblNumeroThreadAtual() : void
++@ aumentarlblNumeroThreadAtual() : void 
++ notificarInicioCarro(linha: int, coluna: int, r: int, g: int, b: int): void
++ notificarMovimentoCarro(linhaAntiga: int, colunaAntiga: int, linhaNova: int, colunaNova: int, r: int, g: int, b: int): void
++ notificarFimCarro(linha: int, coluna: int) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>346</x>
+      <y>220</y>
+      <w>30</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0;130.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>318</x>
+      <y>220</y>
+      <w>28</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;120.0;120.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>396</x>
+      <y>208</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>242</x>
+      <y>208</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>166</x>
+      <y>412</y>
+      <w>32</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;140.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>244</x>
+      <y>396</y>
+      <w>6</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>244</x>
+      <y>384</y>
+      <w>6</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>398</x>
+      <y>276</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>246</x>
+      <y>318</y>
+      <w>6</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>162</x>
+      <y>266</y>
+      <w>90</w>
+      <h>82</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>170.0;390.0;10.0;390.0;10.0;100.0;430.0;100.0;430.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>246</x>
+      <y>394</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>- carros</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>432</x>
+      <y>388</y>
+      <w>112</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>/AbstractMalhaRodovia/
+--
+- LINHA : int
+- COLUNA : int
+--
++ AbstractMalhaRodovia(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ liberar() : void
++ bloquear() : void
++ tryBloquear() : boolean
++ getProximaMalha(carro : Carro) : AbstractMalhaRodovia
++ movimentarCarroSimples(carro : Carro) : void 
++ movimentarCarro (carro : Carro) : void
++ getObserver() : ObserverMalhaRodovia
++ setStrategy(strategy : StrategyMovimentaCarro) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>318</y>
+      <w>180</w>
+      <h>74</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0;880.0;160.0;880.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>296</x>
+      <y>412</y>
+      <w>140</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>680.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>338</x>
+      <y>444</y>
+      <w>106</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>MalhaRodoviaMonitor
+--
+--
++ MalhaRodoviaMonitor(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ liberar() : void
++ bloquear() : void
++ tryBloquear() : boolean
++ getProximaMalha(carro : Carro) : AbstractMalhaRodovia
++ movimentarCarroSimples(carro : Carro) : void 
++ movimentarCarro (carro : Carro) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>534</x>
+      <y>442</y>
+      <w>104</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>MalhaRodoviaMutex
+--
+--
++ MalhaRodoviaMutex(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ liberar() : void
++ bloquear() : void
++ tryBloquear() : boolean
++ getProximaMalha(carro : Carro) : AbstractMalhaRodovia
++ movimentarCarroSimples(carro : Carro) : void 
++ movimentarCarro (carro : Carro) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>526</y>
+      <w>122</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>MalhaRodoviaMonitorCruzamento
+--
+--
++ MalhaRodoviaMonitorCruzamento(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ liberar() : void
++ bloquear() : void
++ tryBloquear() : boolean
++ getProximaMalha(carro : Carro) : AbstractMalhaRodovia
++ movimentarCarroSimples(carro : Carro) : void 
++ movimentarCarro (carro : Carro) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>428</x>
+      <y>478</y>
+      <w>122</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>/AbstractMalhaRodoviaCruzamento/
+--
+- podeMoverBaixo : boolean
+- podeMoverCima : boolean
+- podeMoverDireita : boolean
+- podeMoverEsquerda : boolean
+--
++ AbstractMalhaRodoviaCruzamento(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ getters &amp; setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>526</y>
+      <w>124</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>MalhaRodoviaMutexCruzamento
+--
+--
++ MalhaRodoviaMutexCruzamento(observer : ObserverMalhaRodovia , linha : int, coluna : int)
++ liberar() : void
++ bloquear() : void
++ tryBloquear() : boolean
++ getProximaMalha(carro : Carro) : AbstractMalhaRodovia
++ movimentarCarroSimples(carro : Carro) : void 
++ movimentarCarro (carro : Carro) : void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>484</x>
+      <y>430</y>
+      <w>6</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>524</x>
+      <y>430</y>
+      <w>50</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;230.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>428</x>
+      <y>430</y>
+      <w>30</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>364</x>
+      <y>496</y>
+      <w>28</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>ReentrantLock</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>582</x>
+      <y>494</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>Semaphore</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>506</x>
+      <y>502</y>
+      <w>60</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;280.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>502</y>
+      <w>56</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>260.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>376</x>
+      <y>472</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>470</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>498</y>
+      <w>6</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>376</x>
+      <y>500</y>
+      <w>6</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>542</x>
+      <y>400</y>
+      <w>166</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>810.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>702</x>
+      <y>356</y>
+      <w>36</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>160.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>610</x>
+      <y>356</y>
+      <w>104</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>500.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>356</y>
+      <w>38</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;190.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>356</y>
+      <w>100</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;190.0;480.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>686</x>
+      <y>440</y>
+      <w>110</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>/AbstractCruzamento/
+--
+--
++ AbstractCruzamento(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt;)
++ getMalhasCruzamento() : List&lt;AbstractMalhaRodoviaCruzamento&gt;
++ movimentarCarro(carro : Carro) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>542</x>
+      <y>408</y>
+      <w>148</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;620.0;10.0;620.0;170.0;720.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>542</x>
+      <y>416</y>
+      <w>144</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;580.0;10.0;580.0;150.0;700.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>444</y>
+      <w>10</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>666</x>
+      <y>446</y>
+      <w>12</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes># saidas</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>548</x>
+      <y>454</y>
+      <w>138</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;160.0;470.0;160.0;470.0;10.0;670.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>454</y>
+      <w>10</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>654</x>
+      <y>452</y>
+      <w>30</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>- malhasCruzamento</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>474</y>
+      <w>108</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>CruzamentoMutex
+--
+--
++ CruzamentoMutex(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt;)
++ movimentarCarro(carro : Carro) : void
+- getSaidas() : List&lt;AbstractMalhaRodovia&gt;
+- configurarMalhas(carro : Carro) : void
+- buscarSaida(malhaRodoviaCruzamento : AbstractMalhaRodoviaCruzamento) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>474</y>
+      <w>108</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>CruzamentoMonitor
+--
+--
++ CruzamentoMonitor(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt;)
++ @movimentarCarro(carro : Carro) : void
+- getSaidas() : List&lt;AbstractMalhaRodovia&gt;
+- configurarMalhas(carro : Carro) : void
+- buscarSaida(malhaRodoviaCruzamento : AbstractMalhaRodoviaCruzamento) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>764</x>
+      <y>456</y>
+      <w>18</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>704</x>
+      <y>456</y>
+      <w>14</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>542</x>
+      <y>422</y>
+      <w>162</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;530.0;10.0;530.0;200.0;790.0;200.0;790.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>542</x>
+      <y>428</y>
+      <w>228</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;520.0;10.0;520.0;180.0;1120.0;180.0;1120.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>494</y>
+      <w>52</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>74</x>
+      <y>242</y>
+      <w>58</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>TelaAbstractFactory
+--
+- btnMutex : JButton
+- btnMonitor : JButton
+--
++ TelaAbstractFactory()
+- initialize(): void
+- initializeActions() : void
++ navegarParaTelaMalhaRodoviaria() : void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>100</x>
+      <y>206</y>
+      <w>6</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>74</x>
+      <y>194</y>
+      <w>58</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+ObserverTelaAbstractFactory
+--
+navegarParaTelaMalhaRodoviaria() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>292</y>
+      <w>84</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>ControladorTelaAbstractFactory
+--
+--
++ ControladorTelaInicial(observer: ObserverTelaAbstractFactory)
++ selecionarMutex() : void
++ void selecionarMonitor() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>198</y>
+      <w>16</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;500.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>200</y>
+      <w>38</w>
+      <h>148</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;170.0;10.0;170.0;720.0;10.0;720.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>54</x>
+      <y>200</y>
+      <w>24</w>
+      <h>106</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0;10.0;510.0;30.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>100</x>
+      <y>268</y>
+      <w>6</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>612</x>
+      <y>224</y>
+      <w>164</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>/AbstractFactoryMalhaRodovia/
+--
+--
+createMalhaRodovia(observer : ObserverMalhaRodovia, linha : int , coluna : int ) : AbstractMalhaRodovia
+createMalhaRodoviaCruzamento(observer : ObserverMalhaRodovia, linha : int , coluna : int) : AbstractMalhaRodoviaCruzamento
+createCruzamento(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt; ) : AbstractCruzamento</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>518</x>
+      <y>258</y>
+      <w>164</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>ConcretFactoryMalhaRodoviaMutex
+--
+--
+createMalhaRodovia(observer : ObserverMalhaRodovia, linha : int , coluna : int ) : AbstractMalhaRodovia
+createMalhaRodoviaCruzamento(observer : ObserverMalhaRodovia, linha : int , coluna : int) : AbstractMalhaRodoviaCruzamento
+createCruzamento(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt; ) : AbstractCruzamento
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>258</y>
+      <w>164</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>ConcretFactoryMalhaRodoviaMonitor
+--
+--
+createMalhaRodovia(observer : ObserverMalhaRodovia, linha : int , coluna : int ) : AbstractMalhaRodovia
+createMalhaRodoviaCruzamento(observer : ObserverMalhaRodovia, linha : int , coluna : int) : AbstractMalhaRodoviaCruzamento
+createCruzamento(malhasCruzamento : List&lt;AbstractMalhaRodoviaCruzamento&gt; ) : AbstractCruzamento
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>714</x>
+      <y>240</y>
+      <w>54</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;250.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>598</x>
+      <y>240</y>
+      <w>66</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>310.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>774</x>
+      <y>184</y>
+      <w>48</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;220.0;220.0;220.0;220.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>486</x>
+      <y>174</y>
+      <w>298</w>
+      <h>218</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>20.0;1070.0;10.0;10.0;1470.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>778</x>
+      <y>174</y>
+      <w>10</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>750</x>
+      <y>170</y>
+      <w>28</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>- malhasRodovia[][]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>778</x>
+      <y>180</y>
+      <w>10</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>494</x>
+      <y>180</y>
+      <w>290</w>
+      <h>212</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;1040.0;10.0;10.0;1430.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>754</x>
+      <y>182</y>
+      <w>24</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>- iniciosMalha</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>794</x>
+      <y>178</y>
+      <w>144</w>
+      <h>276</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;1360.0;690.0;1360.0;700.0;10.0;440.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>178</y>
+      <w>8</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>886</x>
+      <y>180</y>
+      <w>24</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>- cruzamentos</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>118</x>
+      <y>216</y>
+      <w>222</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1090.0;10.0;10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+</diagram>
