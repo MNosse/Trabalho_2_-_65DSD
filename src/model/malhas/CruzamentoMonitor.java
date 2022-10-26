@@ -17,37 +17,28 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CruzamentoMonitor extends AbstractCruzamento {
     
-    private Lock lock;
     private AbstractMalhaRodovia saida;
     
     public CruzamentoMonitor(List<AbstractMalhaRodoviaCruzamento> malhasCruzamento) {
         super(malhasCruzamento);
-        lock = new ReentrantLock();
         saidas = getSaidas();
     }
     
     @Override
-    public synchronized void movimentarCarro(Carro carro, AbstractMalhaRodovia malhaRodovia) {
+    public synchronized void movimentarCarro(Carro carro) {
         try {
-            if(lock.tryLock(2, TimeUnit.SECONDS)) {
-                int indiceSaida = new Random().nextInt(saidas.size());
-                saida = saidas.get(indiceSaida);
+            int indiceSaida = new Random().nextInt(saidas.size());
+            saida = saidas.get(indiceSaida);
+            if (saida.tryBloquear()) {
+                saida.liberar();
                 configurarMalhas(carro);
                 do {
                     carro.getMalhaRodovia().movimentarCarroSimples(carro);
                 } while(!carro.getMalhaRodovia().equals(saida) && !carro.isInterrupted() && !carro.getInterrupted());
-                try {
-                    lock.unlock();
-                } catch(IllegalMonitorStateException e) {
-                    //Trata erro do unlock
-                }
+            } else {
+                carro.dormir();
             }
         } catch(InterruptedException e) {
-            try {
-                lock.unlock();
-            } catch(IllegalMonitorStateException i) {
-                //Trata erro do unlock
-            }
             carro.setInterruptedTrue();
         }
     }

@@ -168,7 +168,6 @@ public class ControladorTelaMalhaRodoviaria implements ObserverMalhaRodovia {
         interruptClick = true;
         for (Carro carro: carros) {
             carro.setInterruptedTrue();
-            carro.interrupt();
         }
         carros.clear();
     }

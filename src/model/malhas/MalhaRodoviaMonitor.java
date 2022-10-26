@@ -3,12 +3,12 @@ package model.malhas;
 import model.observer.ObserverMalhaRodovia;
 import model.thread.Carro;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MalhaRodoviaMonitor extends AbstractMalhaRodovia {
-    protected Lock lock = new ReentrantLock();
+    protected ReentrantLock lock = new ReentrantLock();
     
     public MalhaRodoviaMonitor(ObserverMalhaRodovia observer, int linha, int coluna) {
         super(observer, linha, coluna);
@@ -30,20 +30,18 @@ public class MalhaRodoviaMonitor extends AbstractMalhaRodovia {
     
     @Override
     public boolean tryBloquear() throws InterruptedException {
-        return lock.tryLock(2, TimeUnit.SECONDS);
+        return lock.tryLock(new Random().nextInt(2001 - 500) + 500, TimeUnit.MILLISECONDS);
     }
     
     @Override
     public void bloquear() throws InterruptedException {
-        lock.lockInterruptibly();
+        lock.lock();
     }
     
     @Override
     public void liberar() {
-        try {
+        if (lock.isHeldByCurrentThread()) {
             lock.unlock();
-        } catch(IllegalMonitorStateException e) {
-            //Trata erro do unlock
         }
     }
 }

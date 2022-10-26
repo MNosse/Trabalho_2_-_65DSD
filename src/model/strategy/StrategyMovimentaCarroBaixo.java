@@ -15,23 +15,17 @@ public class StrategyMovimentaCarroBaixo extends StrategyMovimentaCarro{
     public void movimentarCarro(Carro carro) {
         AbstractMalhaRodovia proximaMalha = null;
         try {
-            if(carro.getPrimeiraIteracao()) {
-                malhaRodovia.bloquear();
-                malhaRodovia.getObserver().notificarInicioCarro(carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
-                carro.desativarPrimeiraIteracao();
-                carro.dormir();
-            }
             proximaMalha = getProximaMalhaRodovia(carro);
             if(proximaMalha != null) {
                 if(proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
                     for(AbstractCruzamento cruzamento : RepositorioMalha.getInstance().getCruzamentos()) {
                         if(cruzamento.getMalhasCruzamento().contains((AbstractMalhaRodoviaCruzamento) proximaMalha)) {
-                            cruzamento.movimentarCarro(carro, malhaRodovia);
+                            cruzamento.movimentarCarro(carro);
                             break;
                         }
                     }
                 } else {
-                    if (proximaMalha.tryBloquear()) {
+                    if(proximaMalha.tryBloquear()) {
                         carro.setMalhaRodovia(proximaMalha);
                         carro.setLinha(carro.getLinha() + 1);
                         malhaRodovia.getObserver().notificarMovimentoCarro(carro.getLinha() - 1, carro.getColuna(), carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());

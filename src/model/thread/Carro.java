@@ -23,7 +23,8 @@ public class Carro extends Thread {
         this.linha = linha;
         this.coluna = coluna;
         this.nomeCarro= nomeCarro;
-        tempoSleep = new Random().nextInt(3001 - 1000) + 1000;
+        tempoSleep = new Random().nextInt(2001 - 500) + 500;
+//        tempoSleep = 500;
         r = new Random().nextInt(256);
         g = new Random().nextInt(256);
         b = new Random().nextInt(256);
@@ -32,11 +33,24 @@ public class Carro extends Thread {
     
     @Override
     public void run() {
-        while(!isInterrupted() && !interrupted) {
-            malhaRodovia.movimentarCarro(this);
+        try {
+            while(!isInterrupted() && !interrupted) {
+                if(primeiraIteracao) {
+                    if(malhaRodovia.tryBloquear()) {
+                        malhaRodovia.getObserver().notificarInicioCarro(linha, coluna, r, g, b);
+                        desativarPrimeiraIteracao();
+                        dormir();
+                    }
+                } else {
+                    malhaRodovia.movimentarCarro(this);
+                }
+            }
+            malhaRodovia.getObserver().notificarFimCarro(getLinha(), getColuna(), this);
+            Thread.currentThread().interrupt();
+        } catch(InterruptedException e) {
+            malhaRodovia.getObserver().notificarFimCarro(getLinha(), getColuna(), this);
+            Thread.currentThread().interrupt();
         }
-        malhaRodovia.getObserver().notificarFimCarro(getLinha(), getColuna(), this);
-        Thread.currentThread().interrupt();
     }
     
     public void setInterruptedTrue() {

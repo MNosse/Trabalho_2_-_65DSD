@@ -24,15 +24,20 @@ public class CruzamentoMutex extends AbstractCruzamento {
     }
     
     @Override
-    public void movimentarCarro(Carro carro, AbstractMalhaRodovia malhaRodovia) {
+    public void movimentarCarro(Carro carro) {
         try {
-            if(cruzamentoSemaphore.tryAcquire(2, TimeUnit.SECONDS)) {
+            if(cruzamentoSemaphore.tryAcquire(new Random().nextInt(2001 - 500) + 500, TimeUnit.MILLISECONDS)) {
                 int indiceSaida = new Random().nextInt(saidas.size());
                 saida = saidas.get(indiceSaida);
-                configurarMalhas(carro);
-                do {
-                    carro.getMalhaRodovia().movimentarCarroSimples(carro);
-                } while(!carro.getMalhaRodovia().equals(saida) && !carro.isInterrupted() && !carro.getInterrupted());
+                if (saida.tryBloquear()) {
+                    saida.liberar();
+                    configurarMalhas(carro);
+                    do {
+                        carro.getMalhaRodovia().movimentarCarroSimples(carro);
+                    } while(!carro.getMalhaRodovia().equals(saida) && !carro.isInterrupted() && !carro.getInterrupted());
+                } else {
+                    carro.dormir();
+                }
                 cruzamentoSemaphore.release();
             } else {
                 carro.dormir();

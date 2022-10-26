@@ -18,5 +18,5 @@ public abstract class AbstractCruzamento {
         return malhasCruzamento;
     }
     
-    public abstract void movimentarCarro(Carro carro, AbstractMalhaRodovia malhaRodovia);
+    public abstract void movimentarCarro(Carro carro);
 }

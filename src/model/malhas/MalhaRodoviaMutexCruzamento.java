@@ -3,6 +3,7 @@ package model.malhas;
 import model.observer.ObserverMalhaRodovia;
 import model.thread.Carro;
 
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +32,7 @@ public class MalhaRodoviaMutexCruzamento extends AbstractMalhaRodoviaCruzamento 
     
     @Override
     public boolean tryBloquear() throws InterruptedException {
-        return mutex.tryAcquire(2, TimeUnit.SECONDS);
+        return mutex.tryAcquire(new Random().nextInt(2001 - 500) + 500, TimeUnit.MILLISECONDS);
     }
     
     @Override

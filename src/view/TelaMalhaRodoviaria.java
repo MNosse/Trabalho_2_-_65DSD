@@ -55,6 +55,7 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         btnEncerrar.setText("ENCERRAR SIMULAÇÃO");
         btnEncerrar.setPreferredSize(new Dimension(GlobalVariables.LARGURA_TELA/6, GlobalVariables.LADO_QUADRADO));
         btnEncerrar.setMinimumSize(new Dimension(GlobalVariables.LARGURA_TELA/6, GlobalVariables.LADO_QUADRADO));
+        btnEncerrar.setEnabled(false);
         //JTextField txtNumeroThreads
         JTextField txtNumeroThreads = new JTextField();
         txtNumeroThreads.setPreferredSize(new Dimension(GlobalVariables.LARGURA_TELA/6, GlobalVariables.LADO_QUADRADO));
@@ -105,8 +106,16 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
         constraints.gridy = 1;
         panLayout.add(panMalha, constraints);
         
-        btnIniciar.addActionListener(e -> CONTROLADOR.onIniciar(txtNumeroThreads.getText().toString()));
-        btnEncerrar.addActionListener(e -> CONTROLADOR.onEncerrarCarros());
+        btnIniciar.addActionListener(e -> {
+            CONTROLADOR.onIniciar(txtNumeroThreads.getText().toString());
+            btnEncerrar.setEnabled(true);
+            btnIniciar.setEnabled(false);
+        });
+        btnEncerrar.addActionListener(e -> {
+            CONTROLADOR.onEncerrarCarros();
+            btnIniciar.setEnabled(true);
+            btnEncerrar.setEnabled(false);
+        });
         //JSCROLLPANE scpScroll
         JScrollPane scpScroll = new JScrollPane(panLayout);
         //THIS
@@ -129,10 +138,10 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
     
     @Override
     public void notificarInicioCarro(int linha, int coluna, int r, int g, int b) {
-        aumentarlblNumeroThreadAtual();
         lblsMalhaRodoviaria[linha][coluna].setIcon(new ImagemCarro((ImageIcon) lblsMalhaRodoviaria[linha][coluna].getIcon(), r, g, b));
         lblsMalhaRodoviaria[linha][coluna].revalidate();
         lblsMalhaRodoviaria[linha][coluna].repaint();
+        aumentarlblNumeroThreadAtual();
     }
     
     @Override
@@ -147,9 +156,9 @@ public class TelaMalhaRodoviaria extends JFrame implements ObserverTelaMalhaRodo
     
     @Override
     public void notificarFimCarro(int linha, int coluna) {
-        diminuirlblNumeroThreadAtual();
         lblsMalhaRodoviaria[linha][coluna].setIcon(new ImageIcon(new ImageIcon("./src/view/assets/images/"+CONTROLADOR.getMalhaRodoviariaNumeros()[linha][coluna]+".png").getImage().getScaledInstance(GlobalVariables.LADO_QUADRADO, GlobalVariables.LADO_QUADRADO, Image.SCALE_SMOOTH)));
         lblsMalhaRodoviaria[linha][coluna].revalidate();
         lblsMalhaRodoviaria[linha][coluna].repaint();
+        diminuirlblNumeroThreadAtual();
     }
 }
