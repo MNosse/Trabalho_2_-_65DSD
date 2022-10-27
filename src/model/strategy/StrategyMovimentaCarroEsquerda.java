@@ -53,15 +53,11 @@ public class StrategyMovimentaCarroEsquerda extends StrategyMovimentaCarro{
         AbstractMalhaRodovia proximaMalha = null;
         try {
             proximaMalha = getProximaMalhaRodovia(carro);
-            if(proximaMalha.tryBloquear()) {
-                carro.setMalhaRodovia(proximaMalha);
-                carro.setColuna(carro.getColuna() - 1);
-                malhaRodovia.getObserver().notificarMovimentoCarro(carro.getLinha(), carro.getColuna() + 1, carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
-                malhaRodovia.liberar();
-                carro.dormir();
-            } else {
-                carro.dormir();
-            }
+            carro.setMalhaRodovia(proximaMalha);
+            carro.setColuna(carro.getColuna() - 1);
+            malhaRodovia.getObserver().notificarMovimentoCarro(carro.getLinha(), carro.getColuna() + 1, carro.getLinha(), carro.getColuna(), carro.getR(), carro.getG(), carro.getB());
+            malhaRodovia.liberar();
+            carro.dormir();
         } catch(InterruptedException e) {
             malhaRodovia.liberar();
             if (proximaMalha != null) {

@@ -146,7 +146,7 @@ public class ControladorTelaMalhaRodoviaria implements ObserverMalhaRodovia {
         int posicao = new Random().nextInt(RepositorioMalha.getInstance().getIniciosMalha().size());
         int linha = RepositorioMalha.getInstance().getIniciosMalha().get(posicao).getLINHA();
         int coluna = RepositorioMalha.getInstance().getIniciosMalha().get(posicao).getCOLUNA();
-        Carro carro = new Carro(linha, coluna, "Carro", RepositorioMalha.getInstance().getMalhaRodovias()[linha][coluna]);
+        Carro carro = new Carro(linha, coluna, RepositorioMalha.getInstance().getMalhaRodovias()[linha][coluna]);
         carros.add(carro);
         carro.start();
     }

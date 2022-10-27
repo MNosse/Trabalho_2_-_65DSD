@@ -10,25 +10,24 @@ public class Carro extends Thread {
     private boolean primeiraIteracao;
     private int linha;
     private int coluna;
-    private String nomeCarro;
     private int r;
     private int g;
     private int b;
     private int tempoSleep;
     private AbstractMalhaRodovia malhaRodovia;
+    private AbstractMalhaRodovia saida;
 
-    public Carro(int linha, int coluna, String nomeCarro, AbstractMalhaRodovia malhaRodovia) {
+    public Carro(int linha, int coluna, AbstractMalhaRodovia malhaRodovia) {
         interrupted = false;
         primeiraIteracao = true;
         this.linha = linha;
         this.coluna = coluna;
-        this.nomeCarro= nomeCarro;
         tempoSleep = new Random().nextInt(2001 - 500) + 500;
-//        tempoSleep = 500;
         r = new Random().nextInt(256);
         g = new Random().nextInt(256);
         b = new Random().nextInt(256);
         this.malhaRodovia = malhaRodovia;
+        saida = null;
     }
     
     @Override
@@ -72,7 +71,7 @@ public class Carro extends Thread {
     public boolean getInterrupted() {
         return this.interrupted;
     }
-    
+
     public int getLinha() {
         return linha;
     }
@@ -107,5 +106,13 @@ public class Carro extends Thread {
     
     public void setMalhaRodovia(AbstractMalhaRodovia malhaRodovia) {
         this.malhaRodovia = malhaRodovia;
+    }
+
+    public AbstractMalhaRodovia getSaida() {
+        return saida;
+    }
+
+    public void setSaida(AbstractMalhaRodovia saida) {
+        this.saida = saida;
     }
 }

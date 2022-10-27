@@ -17,24 +17,24 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CruzamentoMonitor extends AbstractCruzamento {
     
-    private AbstractMalhaRodovia saida;
-    
     public CruzamentoMonitor(List<AbstractMalhaRodoviaCruzamento> malhasCruzamento) {
         super(malhasCruzamento);
         saidas = getSaidas();
     }
     
     @Override
-    public synchronized void movimentarCarro(Carro carro) {
+    public void movimentarCarro(Carro carro) {
         try {
             int indiceSaida = new Random().nextInt(saidas.size());
-            saida = saidas.get(indiceSaida);
-            if (saida.tryBloquear()) {
-                saida.liberar();
-                configurarMalhas(carro);
-                do {
-                    carro.getMalhaRodovia().movimentarCarroSimples(carro);
-                } while(!carro.getMalhaRodovia().equals(saida) && !carro.isInterrupted() && !carro.getInterrupted());
+            carro.setSaida(saidas.get(indiceSaida));
+            if (carro.getSaida().tryBloquear()) {
+                if(configurarMalhas(carro)) {
+                    do {
+                        carro.getMalhaRodovia().movimentarCarroSimples(carro);
+                    } while (!carro.getMalhaRodovia().equals(carro.getSaida()) && !carro.isInterrupted() && !carro.getInterrupted());
+                } else {
+                    carro.getSaida().liberar();
+                }
             } else {
                 carro.dormir();
             }
@@ -77,81 +77,90 @@ public class CruzamentoMonitor extends AbstractCruzamento {
     }
     
     //CONFIGURA O CAMINHO ATE A SAIDA COM OS STRATEGIES CORRETOS
-    private void configurarMalhas(Carro carro) {
-        buscarSaida((AbstractMalhaRodoviaCruzamento) carro.getMalhaRodovia().getProximaMalhaRodovia(carro));
+    private boolean configurarMalhas(Carro carro) throws InterruptedException {
+        return buscarSaida((AbstractMalhaRodoviaCruzamento) carro.getMalhaRodovia().getProximaMalhaRodovia(carro), carro);
     }
     
     //BUSCA RECURSIVAMENTE A SAIDA
-    private boolean buscarSaida(AbstractMalhaRodoviaCruzamento malhaRodoviaCruzamento) {
+    private boolean buscarSaida(AbstractMalhaRodoviaCruzamento malhaRodoviaCruzamento, Carro carro) throws InterruptedException {
         AbstractMalhaRodovia[][] malhaRodovias = RepositorioMalha.getInstance().getMalhaRodovias();
-        
-        //PROCURA A SAIDA A PARTIR DA MALHA ATUAL
-        if (malhaRodoviaCruzamento.getPodeMoverCima()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroCima(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()-1][malhaRodoviaCruzamento.getCOLUNA()];
-            if (proximaMalha.equals(saida)) {
-                return true;
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverDireita()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroDireita(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()+1];
-            if (proximaMalha.equals(saida)) {
-                return true;
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverBaixo()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroBaixo(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()+1][malhaRodoviaCruzamento.getCOLUNA()];
-            if (proximaMalha.equals(saida)) {
-                return true;
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverEsquerda()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroEsquerda(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()-1];
-            if (proximaMalha.equals(saida)) {
-                return true;
-            }
-        }
-        
-        //CASO NÂO ENCONTRE A SAIDA, PROCURA NAS MALHAS AO LADO NAS QUAIS ESSA PODE IR
-        if (malhaRodoviaCruzamento.getPodeMoverCima()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroCima(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()-1][malhaRodoviaCruzamento.getCOLUNA()];
-            if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
-                if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha)) {
-                    return true;
+        try {
+            if (malhaRodoviaCruzamento.tryBloquear()) {
+                //PROCURA A SAIDA A PARTIR DA MALHA ATUAL
+                if (malhaRodoviaCruzamento.getPodeMoverCima()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroCima(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()-1][malhaRodoviaCruzamento.getCOLUNA()];
+                    if (proximaMalha.equals(carro.getSaida())) {
+                        return true;
+                    }
                 }
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverDireita()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroDireita(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()+1];
-            if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
-                if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha)) {
-                    return true;
+                if (malhaRodoviaCruzamento.getPodeMoverDireita()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroDireita(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()+1];
+                    if (proximaMalha.equals(carro.getSaida())) {
+                        return true;
+                    }
                 }
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverBaixo()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroBaixo(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()+1][malhaRodoviaCruzamento.getCOLUNA()];
-            if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
-                if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha)) {
-                    return true;
+                if (malhaRodoviaCruzamento.getPodeMoverBaixo()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroBaixo(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()+1][malhaRodoviaCruzamento.getCOLUNA()];
+                    if (proximaMalha.equals(carro.getSaida())) {
+                        return true;
+                    }
                 }
-            }
-        }
-        if (malhaRodoviaCruzamento.getPodeMoverEsquerda()) {
-            malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroEsquerda(malhaRodoviaCruzamento));
-            AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()-1];
-            if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
-                if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha)) {
-                    return true;
+                if (malhaRodoviaCruzamento.getPodeMoverEsquerda()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroEsquerda(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()-1];
+                    if (proximaMalha.equals(carro.getSaida())) {
+                        return true;
+                    }
                 }
+
+                //CASO NÂO ENCONTRE A SAIDA, PROCURA NAS MALHAS AO LADO NAS QUAIS ESSA PODE IR
+                if (malhaRodoviaCruzamento.getPodeMoverCima()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroCima(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()-1][malhaRodoviaCruzamento.getCOLUNA()];
+                    if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
+                        if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha, carro)) {
+                            return true;
+                        }
+                    }
+                }
+                if (malhaRodoviaCruzamento.getPodeMoverDireita()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroDireita(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()+1];
+                    if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
+                        if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha, carro)) {
+                            return true;
+                        }
+                    }
+                }
+                if (malhaRodoviaCruzamento.getPodeMoverBaixo()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroBaixo(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()+1][malhaRodoviaCruzamento.getCOLUNA()];
+                    if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
+                        if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha, carro)) {
+                            return true;
+                        }
+                    }
+                }
+                if (malhaRodoviaCruzamento.getPodeMoverEsquerda()) {
+                    malhaRodoviaCruzamento.setStrategy(new StrategyMovimentaCarroEsquerda(malhaRodoviaCruzamento));
+                    AbstractMalhaRodovia proximaMalha = malhaRodovias[malhaRodoviaCruzamento.getLINHA()][malhaRodoviaCruzamento.getCOLUNA()-1];
+                    if (proximaMalha instanceof AbstractMalhaRodoviaCruzamento) {
+                        if(buscarSaida((AbstractMalhaRodoviaCruzamento) proximaMalha, carro)) {
+                            return true;
+                        }
+                    }
+                }
+                malhaRodoviaCruzamento.liberar();
+                return false;
+            } else {
+                return false;
             }
+        } catch (InterruptedException e) {
+            malhaRodoviaCruzamento.liberar();
+            throw new InterruptedException();
         }
-        return false;
     }
 }
