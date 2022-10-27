@@ -4,9 +4,7 @@ import model.observer.ObserverMalhaRodovia;
 import model.thread.Carro;
 
 import java.util.Random;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MalhaRodoviaMonitorCruzamento extends AbstractMalhaRodoviaCruzamento {

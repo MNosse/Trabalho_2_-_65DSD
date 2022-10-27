@@ -10,8 +10,6 @@ import singleton.RepositorioMalha;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 public class CruzamentoMutex extends AbstractCruzamento {
     

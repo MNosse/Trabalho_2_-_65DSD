@@ -1,7 +1,6 @@
 package view;
 
 import controller.controller.ControladorTelaAbstractFactory;
-import controller.controller.ControladorTelaInicial;
 import controller.observer.ObserverTelaAbstractFactory;
 
 import javax.swing.*;

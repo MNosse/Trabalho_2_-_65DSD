@@ -2,8 +2,6 @@ package controller.controller;
 
 import controller.observer.ObserverTelaMalhaRodoviaria;
 import model.abstractFactory.AbstractFactoryMalhaRodovia;
-import model.abstractFactory.ConcretFactoryMalhaRodoviaMonitor;
-import model.abstractFactory.ConcretFactoryMalhaRodoviaMutex;
 import model.malhas.*;
 import model.observer.ObserverMalhaRodovia;
 import model.strategy.StrategyMovimentaCarroBaixo;
